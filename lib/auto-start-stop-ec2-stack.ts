@@ -43,7 +43,7 @@ export class AutoStartStopEc2Stack extends cdk.Stack {
     });
 
     startRule.addTarget(new targets.LambdaFunction(lambdaFn, {
-      event: events.RuleTargetInput.fromObject({Region: stackConfig.targets.ec2region, Action: 'stop'})
+      event: events.RuleTargetInput.fromObject({Region: stackConfig.targets.ec2region, Action: 'start'})
     }));
   }
 }

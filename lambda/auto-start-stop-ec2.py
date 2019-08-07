@@ -25,7 +25,7 @@ def main(event, context):
         print(target_instans_ids)
 
         if not target_instans_ids:
-            print('There are no instances subject to automatic start / stop.')
+            print('There are no instances subject to automatic {}.'.format(action))
         else:
             if action == 'start':
                 client.start_instances(InstanceIds=target_instans_ids)
@@ -38,7 +38,7 @@ def main(event, context):
 
         return {
             "statusCode": 200,
-            "message": 'Finished automatic start / stop EC2 instances process. [Region: {}, Action: {}]'.format(event['Region'], event['Action'])
+            "message": 'Finished automatic {action} EC2 instances process. [Region: {region}, Action: {action}]'.format(region=event['Region'], action=event['Action'])
         }
     except:
         print(traceback.format_exc())

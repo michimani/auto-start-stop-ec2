@@ -2,7 +2,7 @@
   "events": {
     "cron": {
       "start": "55 23 ? * SUN-THU *",
-      "stop": "0 11,15 ? * * *"
+      "stop": "0 12 ? * * *"
     }
   },
   "targets": {

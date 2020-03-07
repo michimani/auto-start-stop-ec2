@@ -1,28 +1,75 @@
 # About
 This is a CDK application for automatically starting / stopping EC2 instances that have specific tag name and value.
 
+# Install and clone
+
+0. Install AWS CDK
+
+    If you have not installed AWS CDK, please install.
+
+    ```
+    $ npm install -g aws-cdk
+    ```
+
+1. Clone this repository
+
+    ```
+    $ git clone https://github.com/michimani/auto-start-stop-ec2.git
+    $ cd auto-start-stop-ec2.git
+    ```
+
+2. Install packages
+
+    ```
+    $ npm install
+    ```
+
+3. Create S3 bucket for CDK application (optional)
+
+    If you use AWS CDK with your AWS account and region in the first time, please run following command to create S3 bucket for CDK application.
+
+    ```
+    $ cdk bootstrap
+    ```
+
 # Usage
 
-If you have not installed AWS CDK, please install.
 
-```
-npm install -g aws-cdk
-```
+1. Add tag to EC2 instances
 
-1. Add tag name `AutoStartStop` with value `TRUE` to the target EC2 instances.
+    Add tag name `AutoStartStop` with value `TRUE` to the target EC2 instances you want to start and stop automatically.
 2. Create resources.  
-    1. run `npm install`
-    2. create config file.
+
+    Create AWS resources using AWS CDK.
+    
+    1. Create config file.
+    
         ```
-        cp stack.config.json.sample stack.config.json
+        $ cp stack.config.json.sample stack.config.json
         ```
 
-        - `event.cron.start` and `event.cron.stop` are cron options for CloudWatch Event schedule.  
+        - `event.cron.start` and `event.cron.stop` are cron options for Amazon EventBridge schedule rule.  
           *default:*  
           *start: "55 23 ? \* SUN-THU \*" ... it means 8 AM on weekday in Japan time (GMT+0900)*  
           *stop: "0 12 ? \* \* \*" ... it means 9 PM daily in Japan time (GMT+0900)*
 
         - `targets.ec2region` is a region that has target EC2 instances.  
           *default: ap-northeast-1*
-    3. run `npm run build`
-    4. run `cdk deploy`
+    
+    2. Generate CloudFormation template.
+    
+        ```
+        $ cdk synth
+        ```
+
+    3. Check change set. (optional)
+    
+        ```
+        $ cdk diff
+        ```
+        
+    4. Deploy.
+    
+        ```
+        $ cdk deploy
+        ```

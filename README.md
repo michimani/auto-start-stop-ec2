@@ -3,24 +3,24 @@ This is a CDK application for automatically starting / stopping EC2 instances th
 
 # Install and clone
 
-0. Install AWS CDK
+0. Install AWS CDK (If you want to install globally.)
 
     If you have not installed AWS CDK, please install.
 
-    ```
+    ```bash
     $ npm install -g aws-cdk
     ```
 
 1. Clone this repository
 
-    ```
+    ```bash
     $ git clone https://github.com/michimani/auto-start-stop-ec2.git
     $ cd auto-start-stop-ec2.git
     ```
 
 2. Install packages
 
-    ```
+    ```bash
     $ npm install
     ```
 
@@ -28,7 +28,7 @@ This is a CDK application for automatically starting / stopping EC2 instances th
 
     If you use AWS CDK with your AWS account and region in the first time, please run following command to create S3 bucket for CDK application.
 
-    ```
+    ```bash
     $ cdk bootstrap
     ```
 
@@ -44,7 +44,7 @@ This is a CDK application for automatically starting / stopping EC2 instances th
     
     1. Create config file.
     
-        ```
+        ```bash
         $ cp stack.config.json.sample stack.config.json
         ```
 
@@ -58,18 +58,34 @@ This is a CDK application for automatically starting / stopping EC2 instances th
     
     2. Generate CloudFormation template.
     
-        ```
+        ```bash
         $ cdk synth
         ```
 
     3. Check change set. (optional)
     
-        ```
+        ```bash
         $ cdk diff
         ```
         
     4. Deploy.
     
-        ```
+        ```bash
         $ cdk deploy
         ```
+
+# Test
+
+## Lambda function
+
+1. Install modules.
+
+    ```bash
+    $ pip install boto3 moto pytest
+    ```
+    
+2. Run test command.
+
+    ```bash
+    $ python -m pytest ./lambda/test/test_start_stop_ec2.py -vv
+    ```

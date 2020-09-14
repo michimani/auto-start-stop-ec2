@@ -1,5 +1,4 @@
 import boto3
-import json
 import traceback
 
 
@@ -16,17 +15,19 @@ def get_target_ec2_instances(ec2_client):
 
     target_instances = []
     for reservation in responce['Reservations']:
-        for instance in reservation['Instances']:
-            instance_name = ''
-            for tag in instance['Tags']:
-                if tag['Key'] == 'Name':
-                    instance_name = tag['Value']
-                    break
+        if 'Instances' in reservation.keys() and len(reservation['Instances']) > 0:
+            for instance in reservation['Instances']:
+                if instance['State']['Name'] == 'running' or instance['State']['Name'] == 'stopped':
+                    instance_name = ''
+                    for tag in instance['Tags']:
+                        if tag['Key'] == 'Name':
+                            instance_name = tag['Value']
+                            break
 
-            target_instances.append({
-                'instance_id': instance['InstanceId'],
-                'instance_name': instance_name
-            })
+                    target_instances.append({
+                        'instance_id': instance['InstanceId'],
+                        'instance_name': instance_name
+                    })
 
     return target_instances
 
@@ -48,7 +49,7 @@ def start_instance(ec2_client, instance):
         print('starting instance (ID: {id} Name: {name})'.format(
             id=instance['instance_id'], name=instance['instance_name']))
 
-        res = ec2_client.start_instances(InstanceIds=instance['instance_name'])
+        res = ec2_client.start_instances(InstanceIds=[instance['instance_id']])
         print(res)
 
         return True
@@ -64,7 +65,7 @@ def stop_instance(ec2_client, instance):
         print('stopping instance (ID: {id} Name: {name})'.format(
             id=instance['instance_id'], name=instance['instance_name']))
 
-        res = ec2_client.stop_instances(InstanceIds=instance['instance_name'])
+        res = ec2_client.stop_instances(InstanceIds=[instance['instance_id']])
         print(res)
 
         return True
